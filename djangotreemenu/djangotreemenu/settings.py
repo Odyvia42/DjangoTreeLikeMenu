@@ -68,6 +68,8 @@ TEMPLATES = [
     },
 ]
 
+STATIC_URL = 'static/'
+
 WSGI_APPLICATION = 'djangotreemenu.wsgi.application'
 
 

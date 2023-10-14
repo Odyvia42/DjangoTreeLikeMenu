@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
     <h1>INDEX</h1>
 
     <p>
         {% for item in menus %}
-        <p> {{item.name}}</p>
-            {% for subitem in item.submenu.set_all %}
+            {% if not item.parent_menu %}
+                <p class="menu"> {{item.name}}</p>
+                <p class="submenu">
+                    {% for item in item.get_children%}
+                    {{item.name}}
+                    {% endfor %}
+                </p>
 
-                    <p> {{subitem.name}}</p>
-
-            {% endfor %}
+            {% endif %}
         {% endfor %}
     </p>
 
