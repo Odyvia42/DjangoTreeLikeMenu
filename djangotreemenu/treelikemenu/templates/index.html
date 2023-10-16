@@ -4,24 +4,34 @@
     <meta charset="UTF-8">
     <title>Title</title>
     {% load static %}
-    <link rel="stylesheet" href="../static/style.css">
+
+
 </head>
 <body>
-    <h1>INDEX</h1>
+    <h1><a href="/">INDEX</a></h1>
+
+
 
     <p>
+        {% for cat in all_categories %}
+            <a href="{% url 'category' cat.name %}" style="font-size: 24px">{{cat.name}}</a>
+        {% endfor %}
+
         {% for item in menus %}
             {% if not item.parent_menu %}
-                <p class="menu"> {{item.name}}</p>
-                <p class="submenu">
-                    {% for item in item.get_children%}
-                    {{item.name}}
+                <p> <a href="{% url 'menu' current_category item.name %}" style="font-size: 20px">{{item.name}}</a> </p>
+                {% if item in previous_menus or item == current_menu %}
+                    {% for subitem in item.get_children %}
+                        <p>
+                            <a href="{% url 'submenu' current_category item.name subitem.name %}" style="font-size: 16px">{{subitem.name}}</a>
+                            {% if subitem.name in request.path and subitem.parent_menu.name in request.path and subitem.parent_category.name in request.path %}
+                                You are now here: {{ page_name }}
+                            {% endif %}
+                        </p>
                     {% endfor %}
-                </p>
-
+                {% endif %}
             {% endif %}
         {% endfor %}
     </p>
-
 </body>
 </html>

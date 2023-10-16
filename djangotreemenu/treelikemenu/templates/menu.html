@@ -1,0 +1,11 @@
+{% load menu_tags %}
+<p class="menu">{{ current_menu.name}}</p>
+{% for item in children %}
+    {% if item.get_children %}
+        {% for subitem in item.get_children %}
+            <p class="submenu2">{% draw_menu subitem.name %}</p>
+        {% endfor %}
+    {% else %}
+        <p class="submenu">{{item.name}}</p>
+    {% endif %}
+{% endfor %}
