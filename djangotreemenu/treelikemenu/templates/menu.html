@@ -1,11 +1,16 @@
 {% load menu_tags %}
-<p class="menu">{{ current_menu.name}}</p>
-{% for item in children %}
-    {% if item.get_children %}
-        {% for subitem in item.get_children %}
-            <p class="submenu2">{% draw_menu subitem.name %}</p>
-        {% endfor %}
-    {% else %}
-        <p class="submenu">{{item.name}}</p>
-    {% endif %}
-{% endfor %}
+<p>
+    {% for item in top_level_items %}
+        <p> <a href="{{ item.url }}" style="font-size: 20px">{{item.name}}</a> </p>
+        {% if item.name|lower in url_parts or item in previous_menus %}
+            {% for subitem in children|get_item:item.name %}
+                <p>
+                    <a href="{{ subitem.url }}" style="font-size: 16px">{{subitem.name}}</a>
+                    {% if subitem.name|lower in url_parts and subitem.parent_menu|lower in url_parts %}
+                        You are now here: {{ page_name }}
+                    {% endif %}
+                </p>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</p>

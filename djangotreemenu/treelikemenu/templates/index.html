@@ -4,34 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     {% load static %}
-
+    {% load menu_tags %}
 
 </head>
 <body>
     <h1><a href="/">INDEX</a></h1>
+    {% for cat in all_categories %}
+        <a href="{% url 'category' cat.name %}" style="font-size: 24px">{{cat.name}}</a>
+    {% endfor %}
 
-
-
-    <p>
-        {% for cat in all_categories %}
-            <a href="{% url 'category' cat.name %}" style="font-size: 24px">{{cat.name}}</a>
-        {% endfor %}
-
-        {% for item in menus %}
-            {% if not item.parent_menu %}
-                <p> <a href="{% url 'menu' current_category item.name %}" style="font-size: 20px">{{item.name}}</a> </p>
-                {% if item in previous_menus or item == current_menu %}
-                    {% for subitem in item.get_children %}
-                        <p>
-                            <a href="{% url 'submenu' current_category item.name subitem.name %}" style="font-size: 16px">{{subitem.name}}</a>
-                            {% if subitem.name in request.path and subitem.parent_menu.name in request.path and subitem.parent_category.name in request.path %}
-                                You are now here: {{ page_name }}
-                            {% endif %}
-                        </p>
-                    {% endfor %}
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    </p>
+    {% if url_parts and current_cat.id != 0 %}
+        {% draw_menu current_cat.name %}
+    {% endif %}
 </body>
 </html>
